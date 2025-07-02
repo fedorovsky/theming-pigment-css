@@ -1,0 +1,43 @@
+{
+  "name": "@fedorovskyi/theme",
+  "version": "1.0.8",
+  "description": "theme",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/tokens.d.ts",
+      "import": "./dist/tokens.js",
+      "require": "./dist/tokens.cjs"
+    },
+    "./theme.css": "./dist/theme.css"
+  },
+  "scripts": {
+    "release": "npm run build && npm publish",
+    "build": "npm run generate:out && npm run build:css && npm run build:js",
+    "generate:css": "tsx generate-css.ts",
+    "generate:tokens": "tsx generate-tokens.ts",
+    "generate:out": "npm run generate:tokens && npm run generate:css",
+    "build:css": "postcss out/theme.css -o dist/theme.css",
+    "build:js": "tsup",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.0.4",
+    "cssnano": "^7.0.7",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^11.0.1",
+    "prettier": "^3.5.3",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist/"
+  ]
+}
