@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "npm run clean && vite build",
-    "clean": "rm -rf dist",
+    "clean": "rimraf dist",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
@@ -40,6 +40,7 @@
     "@types/react-dom": "^18.2.22",
     "fast-glob": "^3.3.3",
     "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
     "storybook": "^9.0.12",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
