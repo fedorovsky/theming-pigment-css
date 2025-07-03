@@ -1,2 +1,1 @@
-# npm-package-boilerplate
-npm-package-boilerplate
+# ui-kit
