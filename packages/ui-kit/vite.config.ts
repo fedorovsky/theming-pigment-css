@@ -7,17 +7,31 @@ import fg from 'fast-glob';
 
 const componentsDir = path.resolve(__dirname, 'src');
 
-// Найдём все index.ts/tsx в папках компонентов
+/**
+ * Find all index.tsx or index.ts files in the src directory (one per component).
+ */
 const componentEntryFiles = fg.sync('*/index.{ts,tsx}', {
   cwd: componentsDir,
   onlyFiles: true,
 });
 
-// Сформируем entry-объект
+/**
+ * Build an object where:
+ * - key = component name in kebab-case (directory name)
+ * - value = absolute path to its index.tsx or index.ts file
+ *
+ * Example:
+ * {
+ *   'button': './src/button/index.tsx',
+ *   'modal': './src/modal/index.ts',
+ *   'card': './src/card/index.tsx'
+ * }
+ */
 const entries = componentEntryFiles.reduce<Record<string, string>>(
   (acc, relativePath) => {
-    const [dirName] = relativePath.split('/'); // 'first-component'
-    acc[dirName] = path.resolve(componentsDir, relativePath); // абсолютный путь
+    const [dirName] = relativePath.split('/');
+    const kebabName = dirName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+    acc[kebabName] = path.resolve(componentsDir, relativePath);
     return acc;
   },
   {}
@@ -34,26 +48,6 @@ export default defineConfig({
   build: {
     lib: {
       entry: entries,
-      // entry: {
-      //   'first-component': path.resolve(
-      //     __dirname,
-      //     'src',
-      //     'first-component',
-      //     'index.ts'
-      //   ),
-      //   'pigment-card': path.resolve(
-      //     __dirname,
-      //     'src',
-      //     'pigment-card',
-      //     'index.ts'
-      //   ),
-      //   'second-component': path.resolve(
-      //     __dirname,
-      //     'src',
-      //     'second-component',
-      //     'index.ts'
-      //   ),
-      // },
       fileName: (format, entryName) => `${entryName}.${format}.js`,
       formats: ['es', 'cjs'],
     },
